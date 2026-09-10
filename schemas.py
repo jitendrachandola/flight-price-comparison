@@ -1,40 +1,28 @@
-from pydantic import BaseModel
-
+from pydantic import BaseModel, ConfigDict
+from datetime import date
 
 class FlightCreate(BaseModel):
-  airline_name: str
-  source: str
-  destination: str
-  price: float
-  flight_date: str
-
+    airline_name: str
+    source: str
+    destination: str
+    price: float
+    flight_date: date
 
 class FlightResponse(FlightCreate):
-  id: int
-
-  class Config:
-    from_attributes = True
-
+    id: int
+    model_config = ConfigDict(from_attributes=True)
 
 class UserCreate(BaseModel):
-  username: str
-  email: str
-  password: str  # Signup ke waqt password ke liye
-
+    username: str
+    email: str
+    password: str
 
 class UserResponse(BaseModel):
-  id: int
-  username: str
-  email: str  # Response mein password nahi dikhega (security ke liye)
-
-  class Config:
-    from_attributes = True
-
+    id: int
+    username: str
+    email: str
+    model_config = ConfigDict(from_attributes=True)
 
 class Token(BaseModel):
-  access_token: str
-  token_type: str
-
-
-class TokenData(BaseModel):
-  email: str | None = None
+    access_token: str
+    token_type: str
