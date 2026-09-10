@@ -19,10 +19,22 @@ class FlightResponse(FlightCreate):
 class UserCreate(BaseModel):
   username: str
   email: str
+  password: str  # Signup ke waqt password ke liye
 
 
-class UserResponse(UserCreate):
+class UserResponse(BaseModel):
   id: int
+  username: str
+  email: str  # Response mein password nahi dikhega (security ke liye)
 
   class Config:
     from_attributes = True
+
+
+class Token(BaseModel):
+  access_token: str
+  token_type: str
+
+
+class TokenData(BaseModel):
+  email: str | None = None
