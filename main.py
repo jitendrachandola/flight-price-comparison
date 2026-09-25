@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, date
 import os
 from dotenv import load_dotenv
 
@@ -110,12 +110,15 @@ def create_flight(flight: FlightCreate, db: Session = Depends(get_db), current_u
     return db_flight
 
 @app.get("/flights/", response_model=list[FlightResponse])
-def get_flights(source: str | None = None, destination: str | None = None, sort_by_price: bool = False, db: Session = Depends(get_db)):
+def get_flights(source: str | None = None, destination: str | None = None,flight_date: date | None = None, sort_by_price: bool = False, db: Session = Depends(get_db)):
     query = db.query(FlightTable)
     if source:
         query = query.filter(FlightTable.source == source)
     if destination:
         query = query.filter(FlightTable.destination == destination)
+    if flight_date:
+        query = query.filter(
+        FlightTable.flight_date == flight_date)
     if sort_by_price:
         query = query.order_by(FlightTable.price.asc())
     return query.all()
